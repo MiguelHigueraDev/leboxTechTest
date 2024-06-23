@@ -12,13 +12,21 @@ class UserRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected UserRepository $userRepository;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->userRepository = app(UserRepository::class);
+    }
+
     #[Test]
     public function it_can_retrieve_all_users(): void
     {
         User::factory()->count(3)->create();
 
-        $repository = new UserRepository();
-        $users = $repository->all();
+        $users = $this->userRepository->all();
 
         $this->assertCount(3, $users);
     }
@@ -28,8 +36,7 @@ class UserRepositoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $repository = new UserRepository();
-        $foundUser = $repository->find($user->id);
+        $foundUser = $this->userRepository->find($user->id);
 
         $this->assertEquals($user->id, $foundUser->id);
     }
@@ -43,8 +50,7 @@ class UserRepositoryTest extends TestCase
             'password' => bcrypt('password'),
         ];
 
-        $repository = new UserRepository();
-        $user = $repository->create($userData);
+        $user = $this->userRepository->create($userData);
 
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', $userData);
@@ -61,8 +67,7 @@ class UserRepositoryTest extends TestCase
             'email' => 'updated@gmail.com'
         ];
 
-        $repository = new UserRepository();
-        $updatedUser = $repository->update($user->id, $newData);
+        $updatedUser = $this->userRepository->update($user->id, $newData);
 
         $this->assertInstanceOf(User::class, $updatedUser);
         $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'Jane Doe']);
@@ -75,9 +80,7 @@ class UserRepositoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $repository = new UserRepository();
-        // Returns 1 instead of true when successful
-        $deleted = $repository->delete($user->id);
+        $deleted = $this->userRepository->delete($user->id);
 
         $this->assertEquals(1, $deleted);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
