@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -21,6 +22,17 @@ class UserRepository implements UserRepositoryInterface
     public function all(): Collection
     {
         return User::all();
+    }
+
+    /**
+     * Retrieve paginated users.
+     *
+     * @param int $perPage The number of users per page. (default: 15)
+     * @return LengthAwarePaginator The users paginated.
+     */
+    public function paginate(int $perPage = 15): LengthAwarePaginator
+    {
+        return User::paginate($perPage);
     }
 
     /**
