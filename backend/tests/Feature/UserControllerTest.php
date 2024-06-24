@@ -15,6 +15,9 @@ class UserControllerTest extends TestCase
     // User data for testing password validation
     protected $userData;
 
+    // JWT token for authentication
+    protected $token;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,12 +30,31 @@ class UserControllerTest extends TestCase
             'email' => $this->faker->unique()->safeEmail,
             'password' => 'Password1!'
         ];
+
+        /// Create a user to authenticate
+        User::factory()->create([
+            'email' => $this->userData['email'],
+            'password' => bcrypt($this->userData['password'])
+        ]);
+
+        // Log into test user
+        $response = $this->postJson('/api/login', [
+            'email' => $this->userData['email'],
+            'password' => $this->userData['password']
+        ]);
+
+        $this->token = $response->json('token');
+    }
+
+    protected function headers()
+    {
+        return ['Authorization' => "Bearer {$this->token}"];
     }
 
     #[Test]
     public function it_returns_paginated_users()
     {
-        $response = $this->getJson('/api/users');
+        $response = $this->getJson('/api/users', $this->headers());
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -53,7 +75,7 @@ class UserControllerTest extends TestCase
             'password' => 'Password1!'
         ];
 
-        $response = $this->postJson('/api/users', $userData);
+        $response = $this->postJson('/api/users', $userData, $this->headers());
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -81,7 +103,7 @@ class UserControllerTest extends TestCase
 
         foreach ($invalidPasswords as $password) {
             $userData = array_merge($this->userData, ['password' => $password]);
-            $response = $this->postJson('/api/users', $userData);
+            $response = $this->postJson('/api/users', $userData, $this->headers());
             $response->assertStatus(422)
                 ->assertJsonValidationErrors('password');
         }
@@ -99,7 +121,7 @@ class UserControllerTest extends TestCase
 
         foreach ($validPasswords as $password) {
             $userData = array_merge($this->userData, ['password' => $password, 'email' => $this->faker->unique()->safeEmail]);
-            $response = $this->postJson('/api/users', $userData);
+            $response = $this->postJson('/api/users', $userData, $this->headers());
             $response->assertStatus(201)
                 ->assertJsonStructure([
                     'id', 'name', 'email', 'created_at', 'updated_at'
@@ -125,7 +147,7 @@ class UserControllerTest extends TestCase
 
         foreach ($invalidPasswords as $password) {
             $updatedData = array_merge($this->userData, ['password' => $password, 'email' => $user->email]);
-            $response = $this->putJson("/api/users/{$user->id}", $updatedData);
+            $response = $this->putJson("/api/users/{$user->id}", $updatedData, $this->headers());
             $response->assertStatus(422)
                 ->assertJsonValidationErrors('password');
         }
@@ -140,7 +162,7 @@ class UserControllerTest extends TestCase
 
         foreach ($validPasswords as $password) {
             $updatedData = array_merge($this->userData, ['password' => $password, 'email' => $user->email]);
-            $response = $this->putJson("/api/users/{$user->id}", $updatedData);
+            $response = $this->putJson("/api/users/{$user->id}", $updatedData, $this->headers());
             $response->assertStatus(201)
                 ->assertJsonStructure([
                     'id', 'name', 'email', 'created_at', 'updated_at'
@@ -153,7 +175,7 @@ class UserControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->getJson("/api/users/{$user->id}");
+        $response = $this->getJson("/api/users/{$user->id}", $this->headers());
 
         $response->assertStatus(200)
             ->assertJson([
@@ -173,7 +195,7 @@ class UserControllerTest extends TestCase
             'password' => 'UpdatedPassword1!'
         ];
 
-        $response = $this->putJson("/api/users/{$user->id}", $updatedData);
+        $response = $this->putJson("/api/users/{$user->id}", $updatedData, $this->headers());
 
         $response->assertStatus(201)
             ->assertJson([
@@ -192,7 +214,7 @@ class UserControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->deleteJson("/api/users/{$user->id}");
+        $response = $this->deleteJson("/api/users/{$user->id}", [], $this->headers());
 
         $response->assertStatus(200)
             ->assertJson([
@@ -207,7 +229,7 @@ class UserControllerTest extends TestCase
     #[Test]
     public function it_does_not_delete_non_existing_user()
     {
-        $response = $this->deleteJson("/api/users/9999");
+        $response = $this->deleteJson("/api/users/9999", [], $this->headers());
 
         $response->assertStatus(404)
             ->assertJson([
@@ -222,7 +244,7 @@ class UserControllerTest extends TestCase
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
             'password' => 'UpdatedPassword1!'
-        ]);
+        ], $this->headers());
 
         $response->assertStatus(404)
             ->assertJson([
@@ -233,7 +255,7 @@ class UserControllerTest extends TestCase
     #[Test]
     public function it_does_not_return_non_existing_user()
     {
-        $response = $this->getJson("/api/users/9999");
+        $response = $this->getJson("/api/users/9999", $this->headers());
 
         $response->assertStatus(404)
             ->assertJson([
