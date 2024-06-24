@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // Token expires in 3 hours
-    const EXPIRATION_TIME = 60 * 60;
+    const EXPIRATION_TIME = 60 * 60 * 3;
 
     /**
      * Logs in a user and returns a JWT.
@@ -43,7 +43,7 @@ class AuthController extends Controller
     /**
      * Creates a new JWT for the given user.
      * @param User $user
-     * @return string The generated JWT. Token is valid for 1 hour.
+     * @return string The generated JWT.
      */
     protected function createToken(User $user)
     {
