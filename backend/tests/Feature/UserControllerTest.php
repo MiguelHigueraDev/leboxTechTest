@@ -262,4 +262,20 @@ class UserControllerTest extends TestCase
                 'message' => 'User not found'
             ]);
     }
+
+    #[Test]
+    public function it_does_not_return_users_without_credentials()
+    {
+        $response = $this->getJson('/api/users');
+
+        $response->assertStatus(401);
+    }
+
+    #[Test]
+    public function it_does_not_create_user_without_credentials()
+    {
+        $response = $this->postJson('/api/users', $this->userData);
+
+        $response->assertStatus(401);
+    }
 }
