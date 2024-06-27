@@ -21,7 +21,11 @@
             v-model="password"
             @update="(val) => (password = val)"
           />
-          <FormButtonComponent label="Iniciar sesión" :isLoading="isLoading" @submit="handleSubmit" />
+          <FormButtonComponent
+            label="Iniciar sesión"
+            :isLoading="isLoading"
+            @submit="handleSubmit"
+          />
         </form>
       </div>
     </div>
