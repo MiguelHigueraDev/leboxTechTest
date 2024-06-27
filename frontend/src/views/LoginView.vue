@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import FormInputComponent from '@/components/shared/FormInputComponent.vue'
-import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
-import AppFeaturesComponent from '@/components/login/AppFeaturesComponent.vue'
-import { ref } from 'vue'
-
-const email = ref('')
-const password = ref('')
-
-const handleSubmit = () => {
-  console.log(email.value, password.value)
-}
-</script>
-
 <template>
   <main style="height: calc(100% - 44px)">
     <div
@@ -21,7 +7,7 @@ const handleSubmit = () => {
         <!-- Application "feature" list -->
         <AppFeaturesComponent />
 
-        <form class="space-y-4 md:space-y-6 w-full">
+        <form class="space-y-4 md:space-y-6 w-full" @submit.prevent="handleSubmit">
           <h3 class="text-xl font-semibold">Ingrese al sistema</h3>
           <FormInputComponent
             label="Email"
@@ -35,9 +21,45 @@ const handleSubmit = () => {
             v-model="password"
             @update="(val) => (password = val)"
           />
-          <FormButtonComponent @click.prevent="handleSubmit" />
+          <FormButtonComponent
+            label="Iniciar sesión"
+            :isLoading="isLoading"
+            @submit="handleSubmit"
+          />
         </form>
       </div>
     </div>
   </main>
 </template>
+
+<script setup lang="ts">
+import FormInputComponent from '@/components/shared/FormInputComponent.vue'
+import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
+import AppFeaturesComponent from '@/components/login/AppFeaturesComponent.vue'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useNotificationStore } from '@/stores/notifications'
+
+const email = ref('default@example.com')
+const password = ref('password')
+const isLoading = ref(false)
+
+const notifications = useNotificationStore()
+
+const handleSubmit = async () => {
+  const authStore = useAuthStore()
+  isLoading.value = true
+  try {
+    await authStore.login(email.value, password.value)
+    notifications.addNotification('Inicio de sesión exitoso.', 'success')
+  } catch (error) {
+    if (error === 'Invalid credentials') {
+      notifications.addNotification('Credenciales inválidas.', 'error')
+    } else {
+      notifications.addNotification('Ocurrió un error inesperado al iniciar sesión.', 'error')
+    }
+  } finally {
+    isLoading.value = false
+  }
+}
+</script>
