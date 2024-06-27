@@ -6,6 +6,9 @@ interface RequestBody {
   [key: string]: string
 }
 
+/**
+ * A wrapper for making HTTP requests with predefined methods.
+ */
 export const fetchWrapper = {
   get: request('GET'),
   post: request('POST'),
@@ -13,7 +16,20 @@ export const fetchWrapper = {
   delete: request('DELETE')
 }
 
+/**
+ * Creates a request function for a specific HTTP method.
+ *
+ * @param {method} method - The HTTP method for the request.
+ * @returns {Function} A function that performs the request.
+ */
 function request(method: method) {
+  /**
+   * Performs an HTTP request.
+   *
+   * @param {string} url - The URL to send the request to.
+   * @param {RequestBody} body - The request payload.
+   * @returns {Promise<any>} A promise that resolves to the response data.
+   */
   return async (url: string, body: RequestBody) => {
     const requestOptions: any = {
       method,
@@ -30,6 +46,12 @@ function request(method: method) {
   }
 }
 
+/**
+ * Generates authentication headers for a request.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @returns {Object} An object containing the authorization header if applicable.
+ */
 function authHeader(url: string) {
   const { user } = useAuthStore()
 
@@ -42,7 +64,14 @@ function authHeader(url: string) {
   }
 }
 
-function handleResponse(response: any) {
+/**
+ * Handles the response from an HTTP request.
+ *
+ * @param {Response} response - The response object from the fetch API.
+ * @returns {Promise<any>} A promise that resolves to the parsed response data.
+ * This automatically logs out the user if the token is invalid or expired.
+ */
+function handleResponse(response: Response) {
   return response.text().then((text: string) => {
     const data = text && JSON.parse(text)
 
