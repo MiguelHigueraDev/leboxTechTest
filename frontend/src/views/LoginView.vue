@@ -1,17 +1,3 @@
-<script setup lang="ts">
-import FormInputComponent from '@/components/shared/FormInputComponent.vue'
-import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
-import AppFeaturesComponent from '@/components/login/AppFeaturesComponent.vue'
-import { ref } from 'vue'
-
-const email = ref('')
-const password = ref('')
-
-const handleSubmit = () => {
-  console.log(email.value, password.value)
-}
-</script>
-
 <template>
   <main style="height: calc(100% - 44px)">
     <div
@@ -41,3 +27,19 @@ const handleSubmit = () => {
     </div>
   </main>
 </template>
+
+<script setup lang="ts">
+import FormInputComponent from '@/components/shared/FormInputComponent.vue'
+import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
+import AppFeaturesComponent from '@/components/login/AppFeaturesComponent.vue'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+
+const email = ref('default@example.com')
+const password = ref('password')
+
+const handleSubmit = () => {
+  const authStore = useAuthStore()
+  console.log(authStore.login(email.value, password.value))
+}
+</script>
