@@ -3,9 +3,8 @@ import { useAuthStore } from '@/stores/auth'
 type method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 interface RequestBody {
-    [key: string]: string;
+  [key: string]: string
 }
-
 
 export const fetchWrapper = {
   get: request('GET'),
