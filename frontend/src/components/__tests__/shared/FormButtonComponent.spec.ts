@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
 import { describe, it, expect } from 'vitest'
 
-describe('ButtonComponent', () => {
+describe('FormButtonComponent', () => {
   it('renders the button with the correct label', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
