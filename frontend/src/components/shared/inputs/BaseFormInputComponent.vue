@@ -4,17 +4,17 @@
     <input :type="(attrs.type as InputTypeHTMLAttribute) || 'text'" :value="modelValue" @input="onInput"
       class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:outline-none focus:border-green-600 block w-full p-2.5"
       v-bind="attrs" />
-    <span v-if="isEmailInvalid" class="text-red-600 text-sm">Por favor ingrese una dirección de correo correcta.</span>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, type InputTypeHTMLAttribute } from 'vue'
+import { type InputTypeHTMLAttribute } from 'vue'
 import { useAttrs } from 'vue'
 
-const props = defineProps<{
+defineProps<{
   label: string
   modelValue: string
+  validator?: (value: string) => boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -24,9 +24,4 @@ const onInput = (event: Event) => {
   const target = event.target as HTMLInputElement
   emit('update:modelValue', target.value)
 }
-
-const isEmailInvalid = computed(() => {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return attrs.type === 'email' && props.modelValue !== '' && !emailPattern.test(props.modelValue)
-})
 </script>

@@ -1,10 +1,10 @@
-import FormInputComponent from "@/components/shared/FormInputComponent.vue"
+import BaseFormInputComponent from "@/components/shared/inputs/BaseFormInputComponent.vue"
 import { mount } from "@vue/test-utils"
 import { describe, expect, it } from "vitest"
 
-describe('FormInputComponent', () => {
+describe('BaseFormInputComponent', () => {
   it('renders the input with the correct label', () => {
-    const wrapper = mount(FormInputComponent, {
+    const wrapper = mount(BaseFormInputComponent, {
         props: {
             label: 'Email',
             modelValue: ''
@@ -16,7 +16,7 @@ describe('FormInputComponent', () => {
   })
 
   it('renders the input with the correct type (text)', async () => {
-    const wrapper = mount(FormInputComponent, {
+    const wrapper = mount(BaseFormInputComponent, {
         props: {
             label: 'Email',
             modelValue: ''
@@ -30,7 +30,7 @@ describe('FormInputComponent', () => {
   })
 
   it('renders the input with the correct type (password)', async () => {
-    const wrapper = mount(FormInputComponent, {
+    const wrapper = mount(BaseFormInputComponent, {
         props: {
             label: 'Password',
             modelValue: ''
@@ -44,7 +44,7 @@ describe('FormInputComponent', () => {
   })
     
   it('emits an input event when the input value changes', async () => {
-    const wrapper = mount(FormInputComponent, {
+    const wrapper = mount(BaseFormInputComponent, {
         props: {
             label: 'Email',
             modelValue: ''
@@ -53,41 +53,6 @@ describe('FormInputComponent', () => {
 
     await wrapper.find('input').setValue('testing')
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
-  })
-
-  it('shows email validation error when email is invalid', async () => {
-    const wrapper = mount(FormInputComponent, {
-      props: {
-        label: 'Email',
-        modelValue: 'email'
-      },
-      attrs: {
-        type: 'email'
-      }
-    })
-
-    await wrapper.find('input').setValue('testing')
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.find('span').exists()).toBe(true)
-    expect(wrapper.find('span').text()).toContain('Por favor ingrese una dirección de correo correcta.')
-  })
-
-  it('does not show email validation error when email is valid', async () => {
-    const wrapper = mount(FormInputComponent, {
-      props: {
-        label: 'Email',
-        modelValue: ''
-      },
-      attrs: {
-        type: 'email'
-      }
-    })
-
-    await wrapper.find('input').setValue('test@gmail.com')
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.find('span').exists()).toBe(false)
   })
 
 })
