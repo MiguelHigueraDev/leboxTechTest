@@ -52,14 +52,14 @@ describe('FormInputComponent', () => {
     })
 
     await wrapper.find('input').setValue('testing')
-    expect(wrapper.emitted()).toHaveProperty('update')
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue')
   })
 
   it('shows email validation error when email is invalid', async () => {
     const wrapper = mount(FormInputComponent, {
       props: {
         label: 'Email',
-        modelValue: ''
+        modelValue: 'email'
       },
       attrs: {
         type: 'email'
