@@ -37,7 +37,7 @@ describe('FormButtonComponent', () => {
     const button = wrapper.find('button')
     expect(button.element).toHaveProperty('disabled', true)
     expect(button.classes()).toContain('cursor-not-allowed')
-    expect(button.classes()).toContain('opacity-90')
+    expect(button.classes()).toContain('opacity-50')
   })
 
   it('button is not disabled when isLoading is false', () => {
@@ -51,6 +51,33 @@ describe('FormButtonComponent', () => {
     const button = wrapper.find('button')
     expect(button.element).toHaveProperty('disabled', false)
     expect(button.classes()).not.toContain('cursor-not-allowed')
-    expect(button.classes()).not.toContain('opacity-90')
+    expect(button.classes()).not.toContain('opacity-50')
+  })
+
+  it('button is disabled when isDisabled is true', () => {
+    const wrapper = mount(FormButtonComponent, {
+      props: {
+        isLoading: false,
+        label: 'Submit',
+        isDisabled: true
+      }
+    })
+
+    const button = wrapper.find('button')
+    expect(button.element).toHaveProperty('disabled', true)
+    expect(button.classes()).toContain('cursor-not-allowed')
+    expect(button.classes()).toContain('opacity-50')
+  })
+
+  it('emits click event when button is clicked', async () => {
+    const wrapper = mount(FormButtonComponent, {
+      props: {
+        isLoading: false,
+        label: 'Submit'
+      }
+    })
+
+    await wrapper.find('button').trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('click')
   })
 })
