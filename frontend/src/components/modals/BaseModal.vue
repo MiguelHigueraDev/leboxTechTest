@@ -1,7 +1,7 @@
 <template>
     <div id="modal" tabindex="-1" :style="{ display: props.isVisible ? 'flex' : 'none' }"
         class="flex justify-center items-center fixed inset-0 z-50 w-full h-full bg-gray-800 bg-opacity-50">
-        <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div :class="['relative p-4 w-full max-h-full', props.size]">
             <div class="relative bg-white rounded-lg shadow">
                 <div class="flex px-5 pt-3 pb-1 items-center">
                     <h3 class="text-xl font-semibold text-gray-900">
@@ -25,9 +25,11 @@
 </template>
 
 <script setup lang="ts">
+
 const props = defineProps<{
     isVisible: boolean,
     title: string,
+    size: 'small' | 'medium' | 'large',
 }>();
 
 const emit = defineEmits(['close']);
@@ -36,3 +38,15 @@ const closeModal = () => {
     emit('close');
 };
 </script>
+
+<style scoped>
+.small {
+    max-width: 20rem;
+}
+.medium {
+    max-width: 30rem;
+}
+.large {
+    max-width: 42rem;
+}
+</style>

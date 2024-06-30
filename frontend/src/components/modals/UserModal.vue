@@ -1,5 +1,5 @@
 <template>
-    <BaseModal :isVisible="isVisible" :title="operation === 'create' ? 'Crear usuario nuevo' : 'Editar usuario'"
+    <BaseModal size="large" :isVisible="isVisible" :title="operation === 'create' ? 'Crear usuario nuevo' : 'Editar usuario'"
         @close="closeModal">
         <UserFormComponent :isVisible="isVisible" :operation="operation" />
     </BaseModal>
