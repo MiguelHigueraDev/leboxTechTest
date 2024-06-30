@@ -7,7 +7,9 @@ describe('FormButtonComponent', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
         isLoading: false,
-        label: 'Submit'
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
       }
     })
 
@@ -18,7 +20,9 @@ describe('FormButtonComponent', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
         isLoading: true,
-        label: 'Submit'
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
       }
     })
 
@@ -30,7 +34,9 @@ describe('FormButtonComponent', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
         isLoading: true,
-        label: 'Submit'
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
       }
     })
 
@@ -44,7 +50,9 @@ describe('FormButtonComponent', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
         isLoading: false,
-        label: 'Submit'
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
       }
     })
 
@@ -59,7 +67,8 @@ describe('FormButtonComponent', () => {
       props: {
         isLoading: false,
         label: 'Submit',
-        isDisabled: true
+        isDisabled: true,
+        type: 'success'
       }
     })
 
@@ -73,11 +82,27 @@ describe('FormButtonComponent', () => {
     const wrapper = mount(FormButtonComponent, {
       props: {
         isLoading: false,
-        label: 'Submit'
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
       }
     })
 
     await wrapper.find('button').trigger('click')
     expect(wrapper.emitted()).toHaveProperty('click')
+  })
+
+  it('applies the correct class based on the type prop', () => {
+    const wrapper = mount(FormButtonComponent, {
+      props: {
+        isLoading: false,
+        label: 'Submit',
+        isDisabled: false,
+        type: 'success'
+      }
+    })
+
+    const button = wrapper.find('button')
+    expect(button.classes()).toContain('success')
   })
 })

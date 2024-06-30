@@ -7,7 +7,8 @@ describe('BaseModal', () => {
     const wrapper = mount(BaseModal, {
       props: {
         title: 'Modal',
-        isVisible: true
+        isVisible: true,
+        size: 'small'
       }
     })
 
@@ -18,7 +19,8 @@ describe('BaseModal', () => {
     const wrapper = mount(BaseModal, {
       props: {
         title: 'Modal',
-        isVisible: true
+        isVisible: true,
+        size: 'small'
       }
     })
 
