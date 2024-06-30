@@ -30,27 +30,28 @@ import EmailFormInputComponent from '../shared/inputs/EmailFormInputComponent.vu
 import TextFormInputComponent from '../shared/inputs/TextFormInputComponent.vue';
 import ValidatedPasswordFormInputComponent from '../shared/inputs/ValidatedPasswordFormInputComponent.vue';
 import { useCurrentUserStore } from '@/stores/currentUser';
-import { fetchWrapper } from '@/helpers/fetchWrapper';
-import { useNotificationStore } from '@/stores/notifications';
+import { useUsersStore } from '@/stores/usersStore';
 
 const currentUser = useCurrentUserStore();
-const notifications = useNotificationStore();
-
-const isLoading = ref(false);
-
-// Store the validity of each field
-const isNameValid = ref(false);
-const isEmailValid = ref(false);
-const isPasswordValid = ref(false);
+const users = useUsersStore();
 
 const props = defineProps<{
     isVisible: boolean,
     operation: 'create' | 'edit',
 }>();
 
+const emit = defineEmits(['close', 'update']);
+
+const isLoading = ref(false);
+
 const buttonLabel = computed(() => {
     return props.operation === 'create' ? 'Crear usuario' : 'Guardar cambios';
 });
+
+// Store the validity of each field to prevent the form from being submitted if any of them is invalid
+const isNameValid = ref(false);
+const isEmailValid = ref(false);
+const isPasswordValid = ref(false);
 
 const updateCurrentUser = (field: 'name' | 'email' | 'password', value: string) => {
     if (field === 'password') {
@@ -80,35 +81,18 @@ const createOrUpdateUser = async () => {
         await updateUser();
     }
     isLoading.value = false;
+    emit('close'); // Close the modal after completing operation
 };
 
 const createUser = async () => {
-    try {
-        await fetchWrapper.post('http://localhost:8000/api/users', {
-            name: currentUser.name,
-            email: currentUser.email,
-            password: currentUser.password,
-        });
-        notifications.addNotification('Usuario creado correctamente.', 'success');
-        currentUser.setCurrentUserEmail('');
-        currentUser.setCurrentUserName('');
-        currentUser.setCurrentUserPassword('');
-    } catch (error) {
-        notifications.addNotification('Ocurrió un error al crear el usuario.', 'error');
-    }
+    await users.createUser(currentUser.name, currentUser.email, currentUser.password);
 };
 
 const updateUser = async () => {
-    try {
-        await fetchWrapper.put(`http://localhost:8000/api/users/${currentUser.id}`, {
-            name: currentUser.name,
-            email: currentUser.email,
-            password: currentUser.password,
-        });
-        notifications.addNotification('Usuario actualizado correctamente.', 'success');
-    } catch (error) {
-        notifications.addNotification('Ocurrió un error al actualizar el usuario.', 'error');
-    }
+    await users.updateUser(currentUser.id,
+        currentUser.name,
+        currentUser.email,
+        currentUser.password);
 };
 
 </script>
