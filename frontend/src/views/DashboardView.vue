@@ -6,13 +6,12 @@
         <LogoutButtonComponent />
       </div>
 
-      <UsersTableComponent :users="users" @delete="openDeletionConfirmation" @edit="openEditModal" />
+      <UsersTableComponent :users="users.users" @delete="openDeletionConfirmation" @edit="openEditModal" />
       <FormButtonComponent label="Crear usuario nuevo" :isLoading="false" :isDisabled="false" type="success"
         class="mt-4" @click="openCreateModal" />
 
       <UserModal :isVisible="isUserModalVisible" :operation="currentOperation" @close="closeUserModal" />
-      <DeleteConfirmationModal :isVisible="isDeleteConfirmationModalVisible" @close="closeDeleteConfirmationModal"
-        @deleteUser="deleteUser" :isLoading="deletionInProgress" />
+      <DeleteConfirmationModal :userIdForDeletion="userIdForDeletion" :isVisible="isDeleteConfirmationModalVisible" @close="closeDeleteConfirmationModal" />
     </div>
   </main>
 </template>
@@ -23,30 +22,18 @@ import UserModal from '@/components/modals/UserModal.vue';
 import FormButtonComponent from '@/components/shared/FormButtonComponent.vue';
 import LogoutButtonComponent from '@/components/shared/LogoutButtonComponent.vue';
 import UsersTableComponent from '@/components/users/UsersTableComponent.vue';
-import { fetchWrapper } from '@/helpers/fetchWrapper';
 import { type User } from '@/interfaces/User';
 import { useCurrentUserStore } from '@/stores/currentUser';
-import { useNotificationStore } from '@/stores/notifications';
+import { useUsersStore } from '@/stores/usersStore';
 import { onMounted, ref, type Ref } from 'vue';
 
-const notifications = useNotificationStore();
 const currentUser = useCurrentUserStore();
+const users = useUsersStore();
 
-const users: Ref<User[]> = ref([]);
 const currentOperation: Ref<'create' | 'edit'> = ref('create');
 const userIdForDeletion: Ref<number | null> = ref(null);
-const deletionInProgress: Ref<boolean> = ref(false);
 const isUserModalVisible: Ref<boolean> = ref(false);
 const isDeleteConfirmationModalVisible: Ref<boolean> = ref(false);
-
-const fetchUsers = async () => {
-  try {
-    const fetchedUsers = await fetchWrapper.get('http://localhost:8000/api/users');
-    users.value = fetchedUsers.data;
-  } catch (error) {
-    notifications.addNotification('Ocurrió un error al cargar los usuarios.', 'error');
-  }
-};
 
 // Create
 const openCreateModal = () => {
@@ -81,20 +68,7 @@ const closeDeleteConfirmationModal = () => {
   isDeleteConfirmationModalVisible.value = false;
 };
 
-const deleteUser = async () => {
-  try {
-    deletionInProgress.value = true;
-    await fetchWrapper.delete(`http://localhost:8000/api/users/${userIdForDeletion.value}`);
-    users.value = users.value.filter(user => user.id !== userIdForDeletion.value);
-    notifications.addNotification('Usuario eliminado correctamente.', 'success');
-  } catch (error) {
-    notifications.addNotification('Ocurrió un error al eliminar el usuario.', 'error');
-  }
-  isDeleteConfirmationModalVisible.value = false;
-  deletionInProgress.value = false;
-};
-
 onMounted(() => {
-  fetchUsers();
+  users.fetchUsers();
 });
 </script>
