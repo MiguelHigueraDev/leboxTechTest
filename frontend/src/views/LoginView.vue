@@ -13,18 +13,19 @@
             label="Email"
             type="email"
             v-model="email"
-            @update="(val) => (email = val)"
+            @update:modelValue="(val) => (email = val)"
           />
           <FormInputComponent
             label="Contraseña"
             type="password"
             v-model="password"
-            @update="(val) => (password = val)"
+            @update:modelValue="(val) => (password = val)"
           />
           <FormButtonComponent
             label="Iniciar sesión"
             :isLoading="isLoading"
-            @submit="handleSubmit"
+            @click="handleSubmit"
+            type="success"
           />
         </form>
       </div>
@@ -33,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import FormInputComponent from '@/components/shared/FormInputComponent.vue'
+import FormInputComponent from '@/components/shared/inputs/BaseFormInputComponent.vue'
 import FormButtonComponent from '@/components/shared/FormButtonComponent.vue'
 import AppFeaturesComponent from '@/components/login/AppFeaturesComponent.vue'
 import { ref } from 'vue'

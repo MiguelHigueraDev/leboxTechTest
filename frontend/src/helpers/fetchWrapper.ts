@@ -27,10 +27,10 @@ function request(method: method) {
    * Performs an HTTP request.
    *
    * @param {string} url - The URL to send the request to.
-   * @param {RequestBody} body - The request payload.
+   * @param {RequestBody} [body] - The request payload.
    * @returns {Promise<any>} A promise that resolves to the response data.
    */
-  return async (url: string, body: RequestBody) => {
+  return async (url: string, body?: RequestBody) => {
     const requestOptions: any = {
       method,
       headers: authHeader(url)
@@ -56,7 +56,7 @@ function authHeader(url: string) {
   const { user } = useAuthStore()
 
   const isLoggedIn = !!user?.token
-  const isApiUrl = url.startsWith('/api')
+  const isApiUrl = url.startsWith('http://localhost:8000/api')
   if (isLoggedIn && isApiUrl) {
     return { Authorization: `Bearer ${user.token}` }
   } else {

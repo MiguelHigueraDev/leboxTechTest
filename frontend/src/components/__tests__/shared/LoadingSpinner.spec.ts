@@ -5,7 +5,9 @@ import { expect, it } from 'vitest'
 
 describe('LoadingSpinner', () => {
   it('renders the loading spinner', () => {
-    const wrapper = mount(LoadingSpinner)
+    const wrapper = mount(LoadingSpinner, {
+      props: { size: '50' }
+    })
     expect(wrapper.exists()).toBe(true)
   })
 
