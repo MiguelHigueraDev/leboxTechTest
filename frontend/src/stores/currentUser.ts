@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 export interface currentUser {
+  id: number
   name: string
   email: string
   password: string
@@ -12,12 +13,20 @@ export interface currentUser {
 export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({
     currentUser: {
+      id: 0,
       name: '',
       email: '',
       password: ''
     }
   }),
   actions: {
+    /**
+     * Sets the current user ID
+     * @param id - The ID of the user.
+     */
+    setCurrentUserId(id: number) {
+      this.currentUser.id = id
+    },
     /**
      * Sets the current user's name.
      * @param name - The name of the user.
@@ -53,6 +62,9 @@ export const useCurrentUserStore = defineStore('currentUser', {
      */
     getCurrentUser(state) {
       return state.currentUser
+    },
+    id(state) {
+      return state.currentUser.id
     },
     name(state) {
       return state.currentUser.name
