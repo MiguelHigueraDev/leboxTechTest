@@ -12,7 +12,7 @@ class UserController extends Controller
     protected $userService;
 
     // Validate that the password has at least one uppercase letter, one lowercase letter, one number, and one special character.
-    const PASSWORD_REGEX = 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\(\)\/!#$%&])[A-Za-z\d\(\)\/!#$@_\-%&]{8,32}$/';
+    const PASSWORD_REGEX = 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/';
 
     public function __construct(UserServiceInterface $userService)
     {
