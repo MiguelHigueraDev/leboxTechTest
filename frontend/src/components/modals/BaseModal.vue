@@ -25,6 +25,8 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted } from 'vue';
+
 
 const props = defineProps<{
     isVisible: boolean,
@@ -37,6 +39,21 @@ const emit = defineEmits(['close']);
 const closeModal = () => {
     emit('close');
 };
+
+// Close the modal on escape key press
+const handleKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('keydown', handleKeydown);
+});
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeydown);
+});
 </script>
 
 <style scoped>
