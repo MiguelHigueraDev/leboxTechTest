@@ -6,11 +6,12 @@
         <LogoutButtonComponent />
       </div>
 
+      <FormButtonComponent label="Crear usuario nuevo" :isLoading="false" :isDisabled="false" type="success"
+      class="my-4" @click="openCreateModal" />
+
       <UsersTableComponent :users="users.users" :usersPerPage="users.perPage" :currentPage="users.currentPage"
         :from="users.from" :to="users.to" :totalUsers="users.totalUsers" :lastPage="users.lastPage"
         @delete="openDeletionConfirmation" @edit="openEditModal" @fetchUsers="fetchUsers" />
-      <FormButtonComponent label="Crear usuario nuevo" :isLoading="false" :isDisabled="false" type="success"
-        class="mt-4" @click="openCreateModal" />
 
       <UserModal :isVisible="isUserModalVisible" :operation="currentOperation" @close="closeUserModal" />
       <DeleteConfirmationModal :userIdForDeletion="userIdForDeletion" :isVisible="isDeleteConfirmationModalVisible"
