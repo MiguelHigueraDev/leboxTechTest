@@ -18,6 +18,10 @@ class DefaultUserSeeder extends Seeder
      */
     public function run(): void
     {
+        if (User::where('email', 'default@example.com')->exists()) {
+            return;
+        }
+
         User::factory()->create([
             'name' => 'John Doe',
             'email' => 'default@example.com',
