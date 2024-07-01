@@ -28,9 +28,9 @@ function request(method: method) {
    *
    * @param {string} url - The URL to send the request to.
    * @param {RequestBody} [body] - The request payload.
-   * @returns {Promise<any>} A promise that resolves to the response data.
+   * @returns {Promise<T>} A promise that resolves to the response data of type T.
    */
-  return async (url: string, body?: RequestBody) => {
+  return async<T> (url: string, body?: RequestBody): Promise<T> => {
     const requestOptions: any = {
       method,
       headers: authHeader(url)
@@ -42,7 +42,7 @@ function request(method: method) {
     }
 
     const response = await fetch(url, requestOptions)
-    return handleResponse(response)
+    return handleResponse<T>(response)
   }
 }
 
@@ -68,10 +68,10 @@ function authHeader(url: string) {
  * Handles the response from an HTTP request.
  *
  * @param {Response} response - The response object from the fetch API.
- * @returns {Promise<any>} A promise that resolves to the parsed response data.
+ * @returns {Promise<T>} A promise that resolves to the parsed response data of type T.
  * This automatically logs out the user if the token is invalid or expired.
  */
-function handleResponse(response: Response) {
+function handleResponse<T>(response: Response): Promise<T> {
   return response.text().then((text: string) => {
     const data = text && JSON.parse(text)
 
