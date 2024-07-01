@@ -11,12 +11,10 @@
             <template v-if="loading">
                 <UserSkeleton v-for="index in 15" :key="index" />
             </template>
-            <template v-if="!loading && users.length === 0">
-                <tr class='bg-white border-b'>
-                    <td class='px-6 py-4' colspan='3'>No hay usuarios registrados.</td>
-                </tr>
-            </template>
-            <tr class='bg-white border-b' v-for="user in users" :key="user.id">
+            <tr v-else-if="!loading && users.length === 0" class='bg-white border-b'>
+                <td class='px-6 py-4' colspan='3'>No hay usuarios registrados.</td>
+            </tr>
+            <tr v-else class='bg-white border-b' v-for="user in users" :key="user.id">
                 <th class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'>{{ user.name }}</th>
                 <td class='px-6 py-4'>{{ user.email }}</td>
                 <td class='px-6 py-4 flex gap-3'>
@@ -32,9 +30,9 @@
     </table>
 
     <div class="flex justify-between w-full mt-3 items-center">
-        <p>Mostrando usuarios <span class="font-semibold">{{ from }}</span> a <span class="font-semibold">{{ to
-                }}</span> de
-            un total de <span class="font-semibold">{{ totalUsers }}</span></p>
+        <p>Mostrando usuarios <span class="font-semibold">{{ from }}</span> 
+        a <span class="font-semibold">{{ to }}</span> de
+        un total de <span class="font-semibold">{{ totalUsers }}</span></p>
         <div class="flex gap-2 flex-wrap">
             <button v-for="page in lastPage" :key="page" @click="$emit('fetchUsers', page)"
                 :class="{ 'bg-blue-400 cursor-not-allowed': page === currentPage || loading }"
