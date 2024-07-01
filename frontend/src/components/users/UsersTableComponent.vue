@@ -25,6 +25,15 @@
     <div v-if="users.length === 0" class="text-center text-gray-500 py-4">
         No hay usuarios registrados.
     </div>
+
+    <div class="flex justify-between w-full mt-3 items-center">
+        <p>Mostrando usuarios {{ from }} a {{ to }} de un total de {{ totalUsers }}</p>
+        <div class="flex gap-2 flex-wrap">
+            <button v-for="page in lastPage" :key="page" @click="$emit('fetchUsers', page)"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-400 rounded-md text-white font-semibold"
+                :class="{ 'bg-blue-400 cursor-not-allowed': page === currentPage }" :disabled="page === currentPage">{{ page }}</button>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -33,6 +42,12 @@ import type { User } from '../../interfaces/User';
 defineEmits(['edit', 'delete', 'fetchUsers'])
 
 defineProps<{
-    users: User[]
+    users: User[],
+    usersPerPage: number,
+    currentPage: number,
+    lastPage: number,
+    totalUsers: number,
+    from: number,
+    to: number,
 }>()
 </script>
