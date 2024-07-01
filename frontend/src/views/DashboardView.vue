@@ -11,6 +11,7 @@
 
       <UsersTableComponent :users="users.users" :usersPerPage="users.perPage" :currentPage="users.currentPage"
         :from="users.from" :to="users.to" :totalUsers="users.totalUsers" :lastPage="users.lastPage"
+        :loading="loadingUsers"
         @delete="openDeletionConfirmation" @edit="openEditModal" @fetchUsers="fetchUsers" />
 
       <UserModal :isVisible="isUserModalVisible" :operation="currentOperation" @close="closeUserModal" />
@@ -38,6 +39,7 @@ const currentOperation: Ref<'create' | 'edit'> = ref('create');
 const userIdForDeletion: Ref<number | null> = ref(null);
 const isUserModalVisible: Ref<boolean> = ref(false);
 const isDeleteConfirmationModalVisible: Ref<boolean> = ref(false);
+const loadingUsers: Ref<boolean> = ref(false);
 
 // Create
 const openCreateModal = () => {
@@ -72,11 +74,14 @@ const closeDeleteConfirmationModal = () => {
   isDeleteConfirmationModalVisible.value = false;
 };
 
-const fetchUsers = (page: number) => {
-  users.fetchUsers(page);
+const fetchUsers = async (page: number) => {
+  users.clearUsers();
+  loadingUsers.value = true;
+  await users.fetchUsers(page);
+  loadingUsers.value = false;
 };
 
 onMounted(() => {
-  users.fetchUsers(users.currentPage);
+  fetchUsers(1);
 });
 </script>

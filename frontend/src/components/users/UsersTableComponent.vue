@@ -8,7 +8,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr class='bg-white border-b' v-for="user in users" :key="user.id">
+            <template v-if="loading">
+                <UserSkeleton v-for="index in 15" :key="index" />
+            </template>
+            <tr v-else-if="!loading && users.length === 0" class='bg-white border-b'>
+                <td class='px-6 py-4' colspan='3'>No hay usuarios registrados.</td>
+            </tr>
+            <tr v-else class='bg-white border-b' v-for="user in users" :key="user.id">
                 <th class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap'>{{ user.name }}</th>
                 <td class='px-6 py-4'>{{ user.email }}</td>
                 <td class='px-6 py-4 flex gap-3'>
@@ -22,22 +28,25 @@
             </tr>
         </tbody>
     </table>
-    <div v-if="users.length === 0" class="text-center text-gray-500 py-4">
-        No hay usuarios registrados.
-    </div>
 
     <div class="flex justify-between w-full mt-3 items-center">
-        <p>Mostrando usuarios {{ from }} a {{ to }} de un total de {{ totalUsers }}</p>
+        <p>Mostrando usuarios <span class="font-semibold">{{ from }}</span> 
+        a <span class="font-semibold">{{ to }}</span> de
+        un total de <span class="font-semibold">{{ totalUsers }}</span></p>
         <div class="flex gap-2 flex-wrap">
             <button v-for="page in lastPage" :key="page" @click="$emit('fetchUsers', page)"
+                :class="{ 'bg-blue-400 cursor-not-allowed': page === currentPage || loading }"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-400 rounded-md text-white font-semibold"
-                :class="{ 'bg-blue-400 cursor-not-allowed': page === currentPage }" :disabled="page === currentPage">{{ page }}</button>
+                :disabled="page === currentPage || loading">
+                {{page}}
+            </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import type { User } from '../../interfaces/User';
+import UserSkeleton from '../shared/skeletons/UserSkeleton.vue';
 
 defineEmits(['edit', 'delete', 'fetchUsers'])
 
@@ -49,5 +58,6 @@ defineProps<{
     totalUsers: number,
     from: number,
     to: number,
+    loading: boolean
 }>()
 </script>
