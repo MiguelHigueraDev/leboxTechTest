@@ -16,6 +16,7 @@ export default mergeConfig(
           '.eslintrc.cjs',
           'postcss.config.js',
           'tailwind.config.js',
+          'src/components/__tests__/shared/stores/mockStores.ts'
         ]
       }
     }
