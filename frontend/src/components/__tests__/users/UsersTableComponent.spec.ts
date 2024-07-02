@@ -72,4 +72,44 @@ describe('UsersTableComponent', () => {
     await wrapper.find('button.delete').trigger('click')
     expect(wrapper.emitted()).toHaveProperty('delete')
   })
+
+  it('displays a skeleton loader when loading is true', () => {
+    const wrapper = mount(UsersTableComponent, {
+      props: {
+        usersData: {
+          users: [],
+          usersPerPage: 10,
+          currentPage: 1,
+          lastPage: 3,
+          totalUsers: 0,
+          from: 0,
+          to: 32
+        },
+        loading: true
+      }
+    })
+
+    expect(wrapper.find('.skeleton')).toBeTruthy()
+  })
+
+  it('paginator displays correct amount of pages', () => {
+    const wrapper = mount(UsersTableComponent, {
+      props: {
+        usersData: {
+          users: [],
+          usersPerPage: 10,
+          currentPage: 1,
+          lastPage: 3,
+          totalUsers: 0,
+          from: 0,
+          to: 32
+        },
+        loading: false
+      }
+    })
+
+    expect(wrapper.text()).toContain('1')
+    expect(wrapper.text()).toContain('2')
+    expect(wrapper.text()).toContain('3')
+  })
 })
