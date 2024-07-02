@@ -33,7 +33,8 @@
 
 
     <div class="flex flex-col md:flex-row gap-5 justify-between w-full mt-3 items-center">
-        <p>Mostrando usuarios <span class="font-semibold">{{ usersData.from }}</span>
+        <p v-if="loading"></p>
+        <p v-else>Mostrando usuarios <span class="font-semibold">{{ usersData.from }}</span>
             a <span class="font-semibold">{{ usersData.to }}</span> de
             un total de <span class="font-semibold">{{ usersData.totalUsers }}</span></p>
         <div class="flex gap-2 flex-wrap mb-5">
