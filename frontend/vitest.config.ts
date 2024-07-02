@@ -8,7 +8,16 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       exclude: [...configDefaults.exclude, 'e2e/**'],
-      root: fileURLToPath(new URL('./', import.meta.url))
+      root: fileURLToPath(new URL('./', import.meta.url)),
+      coverage: {
+        exclude: [
+          'src/main.ts',
+          'src/App.vue',
+          '.eslintrc.cjs',
+          'postcss.config.js',
+          'tailwind.config.js',
+        ]
+      }
     }
   })
 )
