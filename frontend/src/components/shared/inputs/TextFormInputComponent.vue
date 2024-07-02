@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, watch } from 'vue'
+import { computed, onMounted, useAttrs, watch } from 'vue'
 import BaseFormInputComponent from './BaseFormInputComponent.vue';
 
 const attrs = useAttrs()
@@ -48,6 +48,11 @@ const isValidLength = computed(() => lengthValidator(props.modelValue))
 // Emit the validity status of this component
 watch(isValidLength, (valid) => {
     emit('update:isValid', valid)
+})
+
+// Fixes rare edge case where the component is mounted with an invalid value
+onMounted(() => {
+    emit('update:isValid', isValidLength.value)
 })
 
 </script>

@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs, watch } from 'vue'
+import { computed, onMounted, useAttrs, watch } from 'vue'
 import BaseFormInputComponent from './BaseFormInputComponent.vue';
 
 const attrs = useAttrs()
@@ -31,6 +31,11 @@ const isValidEmail = computed(() => emailValidator(props.modelValue))
 
 watch(isValidEmail, (valid) => {
     emit('update:isValid', valid)
+})
+
+// Fixes rare edge case where the component is mounted with an invalid value
+onMounted(() => {
+    emit('update:isValid', isValidEmail.value)
 })
 
 </script>
