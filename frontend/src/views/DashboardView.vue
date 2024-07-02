@@ -1,13 +1,13 @@
 <template>
   <main style="height: calc(100% - 44)">
     <div class="mt-3 mx-auto max-w-4xl bg-white rounded-lg xl:p-0 flex flex-col items-center justify-center">
-      <div class="flex flex-col md:flex-row justify-between w-full items-center mb-6">
-        <h1 class="flex-grow text-2xl font-bold">Sistema de Gestión de Usuarios</h1>
+      <div class="flex flex-col md:flex-row gap-4 p-5 justify-between w-full items-center">
+        <h1 class="flex-grow text-2xl font-bold my-5">Sistema de Gestión de Usuarios</h1>
         <LogoutButtonComponent />
       </div>
 
       <FormButtonComponent label="Crear usuario nuevo" :isLoading="false" :isDisabled="false" type="success"
-        class="my-4" @click="openCreateModal" />
+        class="my-6" @click="openCreateModal" />
 
       <UsersTableComponent :usersData="users as any" :loading="loadingUsers" @delete="openDeletionConfirmation"
         @edit="openEditModal" @fetchUsers="fetchUsers" />
