@@ -82,7 +82,7 @@ function handleResponse<T>(response: Response): Promise<T> {
         logout()
       }
 
-      const error = (data && data.message) || response.statusText
+      const error = (data && data.message) || (data && data.errors) || response.statusText
       return Promise.reject(error)
     }
 

@@ -31,6 +31,7 @@ describe('notifications', () => {
   })
 
   it('removes a notification', () => {
+    const mockDateNow = vi.spyOn(Date, 'now').mockReturnValue(123456789)
     const notification: Notification = {
       message: 'test',
       type: 'success',
@@ -41,6 +42,7 @@ describe('notifications', () => {
     useNotificationStore().removeNotification(notification.id)
 
     expect(useNotificationStore().notifications).toEqual([])
+    mockDateNow.mockRestore()
   })
 
   it('retrieves all notifications', () => {
