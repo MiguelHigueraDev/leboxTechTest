@@ -32,11 +32,11 @@
     </div>
 
 
-    <div class="flex justify-between w-full mt-3 items-center">
+    <div class="flex flex-col md:flex-row gap-5 justify-between w-full mt-3 items-center">
         <p>Mostrando usuarios <span class="font-semibold">{{ usersData.from }}</span>
             a <span class="font-semibold">{{ usersData.to }}</span> de
             un total de <span class="font-semibold">{{ usersData.totalUsers }}</span></p>
-        <div class="flex gap-2 flex-wrap">
+        <div class="flex gap-2 flex-wrap mb-5">
             <button v-for="page in usersData.lastPage" :key="page" @click="$emit('fetchUsers', page)"
                 :class="{ 'bg-blue-400 cursor-not-allowed': page === usersData.currentPage || loading }"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-500 active:bg-blue-400 rounded-md text-white font-semibold"
