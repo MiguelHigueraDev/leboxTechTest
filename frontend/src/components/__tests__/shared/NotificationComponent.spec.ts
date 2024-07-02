@@ -16,7 +16,7 @@ describe('NotificationComponent', () => {
 
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.text()).toContain('Test message')
-    expect(wrapper.classes()).toContain('bg-green-300')
+    expect(wrapper.classes()).toContain('border-green-400')
   })
 
   it('renders the error notification component with provided message', () => {
@@ -32,6 +32,6 @@ describe('NotificationComponent', () => {
 
     expect(wrapper.exists()).toBe(true)
     expect(wrapper.text()).toContain('Test message')
-    expect(wrapper.classes()).toContain('bg-red-300')
+    expect(wrapper.classes()).toContain('border-red-400')
   })
 })
