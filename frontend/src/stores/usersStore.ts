@@ -58,6 +58,8 @@ export const useUsersStore = defineStore('users', {
     async createUser(name: string, email: string, password: string) {
       const request = () => fetchWrapper.post('http://localhost:8000/api/users', { name, email, password })
       await this.handleRequest(request, 'Usuario creado correctamente', 'Ocurrió un error al crear el usuario')
+      // Fetch the last page to always show the new user
+      await this.fetchLastPage()
       await this.fetchUsers(this.currentPage)
     },
 
@@ -70,7 +72,22 @@ export const useUsersStore = defineStore('users', {
     async deleteUser(id: number) {
       const request = () => fetchWrapper.delete(`http://localhost:8000/api/users/${id}`)
       await this.handleRequest(request, 'Usuario eliminado correctamente', 'Ocurrió un error al eliminar el usuario')
+      // There was one user left on the last page,
+      // so we need to go back one page if page > 0
+      if (this.from === this.to && this.currentPage > 1) {
+        this.setCurrentPage(this.currentPage - 1)
+      }
       await this.fetchUsers(this.currentPage)
+    },
+
+    async fetchLastPage() {
+      const request = () => fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=1}`)
+      const data = await this.handleRequest(request, '', '')
+      this.setCurrentPage(data.last_page)
+    },
+
+    setCurrentPage(page: number) {
+      this.currentPage = page
     },
 
     clearUsers() {
