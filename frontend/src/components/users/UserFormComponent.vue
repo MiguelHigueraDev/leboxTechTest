@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col-reverse sm:flex-row">
+    <div class="flex flex-col sm:flex-row">
         <div class="p-4 md:p-5 sm:w-2/3">
             <form class="space-y-4" @submit.prevent="createOrUpdateUser">
                 <TextFormInputComponent :max-length="255" :min-length="3" label="Nombre" placeholder="Juan Pérez"
