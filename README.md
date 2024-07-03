@@ -1,55 +1,126 @@
-# Repositorio de Pruebas para Evaluación de Desarrolladores
+# Prueba técnica Lebox
 
-Bienvenido al repositorio de pruebas para la evaluación de desarrolladores. Este repositorio está diseñado para evaluar las habilidades técnicas de los candidatos interesados en posiciones de desarrollo web.
+Desarrollado por Miguel Higuera - miguelhiguera.dev@gmail.com
 
-## Descripción del Proyecto
+Sistema de gestión de usuarios desarrollado con Laravel como API REST y Vue 3 + TypeScript con Composition API como frontend, utilizando patrón MVC.
 
-El objetivo de este proyecto es desarrollar un sistema de gestión de usuarios utilizando tecnologías modernas y siguiendo las mejores prácticas de desarrollo. Los candidatos deben completar una serie de tareas que incluyen la implementación de autenticación, CRUD de usuarios, pruebas unitarias, dockerización y documentación.
+Proporciona una API CRUD sencilla para listar, ver, agregar, modificar y eliminar usuarios, con una interfaz SPA.
 
-## Tareas a Realizar
+## Instrucciones (backend)
+1. Construir la aplicación usando el comando `docker-compose build` en el directorio raíz.
+2. Ejecutar la aplicación usando `docker-compose up -d`.
+3. Ejecutar `docker exec -it laravel_app php artisan migrate --seed` para realizar las migraciones e ingresar usuarios de prueba, además del usuario predeterminado.
 
-### Tecnologías Requeridas
-- Backend: Laravel como API REST (sin Laravel Auth)
-- Frontend: Vue.js con Vite
+NOTA: Dejé el archivo .env en el repositorio para que no tengan que generar la clave del JWT.
 
-### Tareas Específicas
-1. Implementar un sistema de registro y login seguro.
-2. Desarrollar un CRUD completo para la gestión de usuarios.
-3. Escribir pruebas unitarias para el frontend y el backend.
-4. Configurar Docker para facilitar el despliegue del entorno de desarrollo.
-5. Documentar el proyecto con instrucciones claras en el README.md.
+El backend se estará ejecutando en el puerto **8000**.
 
-## Instrucciones para los Candidatos
+## Instrucciones (frontend)
+1. Ir al directorio `frontend`.
+2. Ejecutar el comando `npm install` para instalar las dependencias.
+3. Ejecutar `npm run dev` para ejecutar el servidor de desarrollo.
 
-1. **Fork y Clonación del Repositorio**
-   - Haz un fork de este repositorio en tu cuenta de GitHub.
-   - Clona el repositorio a tu máquina local para comenzar a trabajar.
+El frontend será accesible en `http://localhost:5173`.
 
-2. **Desarrollo del Proyecto**
-   - Crea una nueva rama con tu nombre para realizar las modificaciones.
-   - Completa las tareas descritas en la sección "Tareas a Realizar".
+Ejecutar `npm run build` para hacer build para producción.
 
-3. **Pruebas y Validación**
-   - Asegúrate de cumplir con los criterios de evaluación especificados en el README.md.
-   - Ejecuta todas las pruebas unitarias y verifica la cobertura de código.
+## Autenticación
 
-4. **Entrega**
-   - Sube tus cambios a tu repositorio en GitHub.
-   - Crea un pull request a la rama principal de este repositorio desde tu rama de desarrollo.
+> [!IMPORTANT]
+> Asegúrese de realizar las migraciones con las instrucciones proporcionadas para que se genere el usuario predeterminado.
 
-## Criterios de Evaluación
+Hay un usuario predeterminado para iniciar sesión en el sistema:
 
-- Funcionalidad: ¿Se implementaron todas las funcionalidades requeridas correctamente?
-- Seguridad: ¿Se siguen las mejores prácticas en cuanto a seguridad y manejo de contraseñas?
-- Buenas Prácticas: ¿El código sigue un patrón de diseño adecuado? ¿Está bien documentado y estructurado?
-- Testing: ¿Se escribieron pruebas unitarias significativas y cubren al menos el 50% del código?
-- Dockerización y Documentación: ¿Se proporcionan instrucciones claras para levantar y probar el proyecto usando Docker?
+Usuario: default@example.com
 
-## Recursos Adicionales
+Contraseña: password
 
-- [Documentación de Laravel](https://laravel.com/docs)
-- [Documentación de Vue.js](https://v3.vuejs.org/guide/introduction.html)
-- [Guía de Markdown](https://www.markdownguide.org/getting-started/)
+## Testing y cobertura
 
-¡Buena suerte!
+- Para ejecutar las pruebas de backend y ver información de cobertura, ejecutar en directorio raíz:
 
+`docker exec -it laravel_app php artisan test --coverage`
+
+- Para ejecutar las pruebas de frontend y ver información de cobertura, ejecutar en directorio `frontend`:
+
+`npm run test:unit:coverage`
+
+## Funcionamiento
+
+
+### Backend
+
+#### Usuario
+
+Un CRUD con un controlador `UserController` que se encarga de hacer las cinco operaciones (Listar, Leer, Crear, Modificar y Eliminar). 
+
+Se usa el validador de Laravel para validar requisitos de la contraseña usando la regex `/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/` que exige estos requisitos:
+
+- 8-32 caracteres
+- Una letra mayúscula
+- Una letra minúscula
+- Un número (0-9)
+- Uno de los siguientes símbolos: # ? ! @ $ % ^ & * -
+
+Además el email debe ser único y tener un formato de email.
+
+Las eliminaciones son permanentes, no soft delete.
+
+#### Autenticación
+
+`AuthController` utiliza la biblioteca `firebase/php-jwt` para codificar y decodificar tokens JWT. Proporciona dos métodos:
+
+1. Login: Recibe en el body el email y contraseña del usuario. Se verifica si estas credenciales son correctas, y en caso de serlas se genera el token con `createToken()` para retornarlo. En caso de credenciales incorrectas, se retorna un error 401.
+
+2. CreateToken: Se encarga de obtener el `JWT_SECRET` de las variables de entorno y genera el token con el payload:
+
+```json
+{
+    "iss": "lebox",
+    "sub": 1, // ID del usuario
+    "iat": 123456789, // Tiempo de generación del token
+    "exp": 123412789 // Fecha de expiración del token
+}
+```
+
+#### Rutas
+
+Las rutas se encuentran en formato JSON para importar en Postman en el archivo LeboxApp.postman_collection.json.
+
+
+### Frontend
+
+La aplicación es una SPA con solo dos vistas, una para iniciar sesión y un dashboard para usar toda la funcionalidad. Se utilizan modals y componentes reutilizables.
+
+#### fetchWrapper
+
+La aplicación usa un wrapper para hacer todas las peticiones HTTP. Esto es para poder facilitar el proceso de adjuntar el JWT con las solicitudes, evitando la repetición.
+
+El wrapper acepta un tipo genérico para poder especificar el tipo de respuesta, y retorna una promesa correspondiente al tipo indicado.
+
+Si se realiza una petición y el token está vencido o esta retorna un error 401 o 403, se cierra la sesión del usuario de forma inmediata.
+
+#### Stores
+
+La aplicación usa **Pinia** para manejar diversos stores que centralizan la información relevante a toda la aplicación, para evitar mucho _prop drilling_ entre los componentes.
+
+##### Notifications (stores/notifications.ts)
+
+Se encarga de centralizar un array de notificaciones que pueden ser de tipo _success_ o _error_.
+Proporciona métodos para agregar una nueva notificación, eliminar una específica y también eliminar todas las notificaciones.
+
+Estas notificaciones aparecen en la esquina superior de la pantalla para informar al usuario del resultado de sus interacciones en el sistema.
+
+##### Auth (stores/auth.ts)
+
+Cuenta con un método login al que se le pasa el email y contraseña, y este hace un POST al endpoint de login. Si es exitoso, se guarda el JWT en localStorage y se redirige al usuario al dashboard.
+
+También cuenta con un método logout que elimina el token de localStorage y redirige al usuario a la ruta `/login`.
+
+##### Current User (stores/currentUser.ts)
+
+Un store que simplemente sirve para facilitar los procesos de crear y modificar usuarios, almacenando los datos del usuario que está siendo creado/modificado en ese momento.
+
+##### Users (stores/usersStore.ts)
+
+Se encarga de almacenar toda la lista de usuarios paginados en el momento de forma centralizada. Proporciona métodos para realizar todas las operaciones CRUD y mantiene el estado consistente en todos los componentes. Además, envía las notificaciones acordes al éxito/fallo de un proceso.
