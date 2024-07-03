@@ -1,3 +1,9 @@
+<!--
+  Component: UserSkeleton
+  Description: This component uses the AnimatedLoader component to create 
+  a skeleton loader for each row in the user table.
+-->
+
 <template>
     <tr class="bg-white border-b">
         <th class="px-6 py-[18px] font-medium text-gray-900 whitespace-nowrap">

@@ -1,3 +1,8 @@
+<!--
+  Component: ValidatedPasswordFormInputComponent
+  Description: This component is a form input that validates a password according to the backend's password policy.
+-->
+
 <template>
     <div>
         <div class="flex items-center gap-3">

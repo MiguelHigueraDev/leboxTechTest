@@ -1,3 +1,8 @@
+<!--
+  Component: TextFormInputComponent
+  Description: This component is a form input that validates the length of the input.
+-->
+
 <template>
     <div>
         <BaseFormInputComponent :label="label" :modelValue="modelValue" :validator="lengthValidator" type="email"

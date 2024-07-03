@@ -1,3 +1,7 @@
+<!--
+  Component: AppFeaturesComponent
+  Description: This component displays the features of the application, it is used in the login page.
+-->
 <template>
   <div>
     <h2 class="mb-6 font-bold text-2xl">Sistema de gestión de usuarios</h2>

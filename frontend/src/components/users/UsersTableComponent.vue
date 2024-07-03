@@ -1,3 +1,8 @@
+<!--
+  Component: UsersTableComponent
+  Description: This component displays a table with a list of users. It also includes pagination buttons.
+-->
+
 <template>
     <div class='overflow-x-auto w-full'>
         <table class='w-full text-sm text-left rtl:text-right text-gray-500'>

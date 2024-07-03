@@ -1,3 +1,8 @@
+<!--
+  Component: FormButtonComponent
+  Description: This component is a button that can be used in forms. It can be disabled and show a loading spinner.
+-->
+
 <template>
   <button type="submit" :disabled="isLoading || isDisabled"
     class="form-button w-[200px] flex items-center justify-center gap-4 text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

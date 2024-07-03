@@ -1,3 +1,9 @@
+<!--
+  Component: AnimatedLoader
+  Description: This component is a skeleton loader that animates a gradient background. 
+  It can be used to indicate that a component is loading.
+-->
+
 <template>
     <div class="skeleton"></div>
 </template>

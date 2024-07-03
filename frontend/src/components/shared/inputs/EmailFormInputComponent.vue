@@ -1,3 +1,8 @@
+<!--
+  Component: EmailFormInputComponent
+  Description: This component is a form input that validates an email.
+-->
+
 <template>
     <div>
         <BaseFormInputComponent :label="label" :modelValue="modelValue" :validator="emailValidator" type="email"

@@ -1,3 +1,7 @@
+<!--
+  View for the dashboard. It displays the users table and the buttons to create a new user and logout.
+-->
+
 <template>
   <main style="height: calc(100% - 44)">
     <div class="mt-3 mx-auto max-w-4xl bg-white rounded-lg xl:p-0 flex flex-col items-center justify-center">

@@ -1,3 +1,8 @@
+<!--
+  Component: BaseFormInputComponent
+  Description: This component is a base input that can be used to create other inputs.
+-->
+
 <template>
   <div class="flex flex-col gap-2">
     <label class="block text-sm font-medium text-gray-900">{{ label }}</label>
