@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 import { useNotificationStore } from './notifications'
 import type { User } from '@/interfaces/User'
 
+/**
+ * This is the response from the API when fetching users.
+ */
 interface PaginatedUserData {
   data: User[]
   total: number
@@ -24,6 +27,7 @@ export const useUsersStore = defineStore('users', {
     to: 0
   }),
   actions: {
+    // Centralized way of handling requests and showing notifications
     async handleRequest<T>(request: () => Promise<T>, successMsg: string, errorMsg: string) {
       const notifications = useNotificationStore()
       try {
@@ -46,6 +50,7 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
+    // Paginated users
     async fetchUsers(page: number = 1) {
       const request = () => fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=${page}`)
       const fetchedUsers = await this.handleRequest(request, '', 'Ocurrió un error al cargar los usuarios')
@@ -60,6 +65,7 @@ export const useUsersStore = defineStore('users', {
       })
     },
 
+    // One user
     async getUser(id: number) {
       const request = () => fetchWrapper.get<User>(`http://localhost:8000/api/users/${id}`)
       return this.handleRequest(request, '', 'Ocurrió un error al cargar el usuario')
