@@ -88,7 +88,6 @@ const createUser = async () => {
     try {
         await users.createUser(currentUser.name, currentUser.email, currentUser.password);
     } catch (error) {
-        console.error(error);
         isLoading.value = false;
         emit('close');
     }
@@ -98,7 +97,6 @@ const updateUser = async () => {
     try {
         await users.updateUser(currentUser.id, currentUser.name, currentUser.email, currentUser.password);
     } catch (error: any) {
-        console.error(error);
         isLoading.value = false;
         emit('close');
     }
