@@ -85,14 +85,21 @@ const createOrUpdateUser = async () => {
 };
 
 const createUser = async () => {
-    await users.createUser(currentUser.name, currentUser.email, currentUser.password);
+    try {
+        await users.createUser(currentUser.name, currentUser.email, currentUser.password);
+    } catch (error) {
+        isLoading.value = false;
+        emit('close');
+    }
 };
 
 const updateUser = async () => {
-    await users.updateUser(currentUser.id,
-        currentUser.name,
-        currentUser.email,
-        currentUser.password);
+    try {
+        await users.updateUser(currentUser.id, currentUser.name, currentUser.email, currentUser.password);
+    } catch (error: any) {
+        isLoading.value = false;
+        emit('close');
+    }
 };
 
 </script>

@@ -31,8 +31,18 @@ export const useUsersStore = defineStore('users', {
         if (successMsg) notifications.addNotification(successMsg, 'success')
         return result
       } catch (error) {
-        notifications.addNotification(errorMsg, 'error')
+        this.sendErrorNotification(error, errorMsg);
         throw error
+      }
+    },
+
+    // Send specific notifications or a default one
+    sendErrorNotification(error: any, errorMsg: string) {
+      const notifications = useNotificationStore()
+      if (error.email) {
+        notifications.addNotification("El email ya está siendo usado por otro usuario.", 'error')
+      } else {
+        notifications.addNotification(errorMsg, 'error')
       }
     },
 
