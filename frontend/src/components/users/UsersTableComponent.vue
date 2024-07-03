@@ -38,7 +38,7 @@
             a <span class="font-semibold">{{ usersData.to }}</span> de
             un total de <span class="font-semibold">{{ usersData.totalUsers }}</span></p>
         <div class="flex gap-2 flex-wrap mb-5">
-            <!-- Disable button if in current page and display it with a lighter color -->
+            <!-- Disable button if in current page or loading and display it with a lighter color -->
             <button v-for="page in usersData.lastPage" :key="page" @click="$emit('fetchUsers', page)" :class="[
                 'px-4 py-2 hover:bg-blue-500 active:bg-blue-400 rounded-md text-white font-semibold',
                 { 'bg-blue-400 cursor-not-allowed': page === usersData.currentPage || loading },
