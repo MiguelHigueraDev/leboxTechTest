@@ -1,3 +1,8 @@
+<!--
+  Component: NotificationsContainerComponent
+  Description: This component displays a list of notifications.
+-->
+
 <template>
   <div class="fixed right-2 top-2">
     <ul class="space-y-2">

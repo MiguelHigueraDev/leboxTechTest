@@ -1,3 +1,8 @@
+<!--
+  Component: UserModal
+  Description: This component is a modal that displays the user form for creating or editing a user.
+-->
+
 <template>
     <BaseModal size="large" :isVisible="isVisible" :title="operation === 'create' ? 'Crear usuario nuevo' : 'Editar usuario'"
         @close="closeModal">

@@ -1,3 +1,8 @@
+<!--
+  Component: PasswordValidityComponent
+  Description: This component displays a list of password requirements and checks if the password meets them.
+-->
+
 <template>
     <div class="flex flex-col justify-center gap-2 h-full">
         <label class="block text-sm font-medium text-gray-900">Requisitos contraseña</label>

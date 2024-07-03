@@ -1,3 +1,8 @@
+<!--
+  Component: DeleteConfirmationModal
+  Description: This component is a modal that asks the user to confirm the deletion of a user.
+-->
+
 <template>
     <BaseModal size="medium" :isVisible="isVisible" title="Confirmar eliminación" @close="closeModal">
         <div class="p-4 placeholder-opacity-30">

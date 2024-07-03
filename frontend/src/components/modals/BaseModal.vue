@@ -1,3 +1,8 @@
+<!--
+  Component: BaseModal
+  Description: This component is a base modal that can be used to create other modals.
+-->
+
 <template>
     <div id="modal" tabindex="-1" :style="{ display: props.isVisible ? 'flex' : 'none' }"
         class="flex justify-center items-center fixed inset-0 z-50 w-full h-full bg-gray-800 bg-opacity-50">

@@ -1,3 +1,8 @@
+<!--
+  Component: LoadingSpinner
+  Description: This component is just a SVG of a loading spinner.
+-->
+
 <template>
   <svg :style="{ width: `${size}px`, height: `${size}px` }" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path

@@ -1,3 +1,8 @@
+<!--
+  Component: UserFormComponent
+  Description: This component displays a form for creating or editing a user.
+-->
+
 <template>
     <div class="flex flex-col sm:flex-row">
         <div class="p-4 md:p-5 sm:w-2/3">

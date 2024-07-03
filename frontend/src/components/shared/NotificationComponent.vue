@@ -1,3 +1,8 @@
+<!--
+  Component: NotificationComponent
+  Description: This component represents a notification. It can be a success or error message.
+-->
+
 <template>
   <li
     class="p-4 rounded-md border-l-8 shadow-lg drop-shadow-lg bg-white"
