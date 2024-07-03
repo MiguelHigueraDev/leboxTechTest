@@ -8,7 +8,12 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    && docker-php-ext-install zip pdo_mysql
+    libcurl4-openssl-dev \
+    && docker-php-ext-install zip pdo_mysql \
+    curl
+
+# Install pcov for code coverage
+RUN pecl install pcov && docker-php-ext-enable pcov && apt-get clean
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -18,9 +23,6 @@ WORKDIR /var/www/html
 
 # Copy existing application directory contents from the 'backend' directory
 COPY backend /var/www/html
-
-# Install PHP extensions required for Laravel
-RUN docker-php-ext-install pdo pdo_mysql
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
