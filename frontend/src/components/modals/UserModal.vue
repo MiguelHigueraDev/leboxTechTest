@@ -4,24 +4,28 @@
 -->
 
 <template>
-    <BaseModal size="large" :isVisible="isVisible" :title="operation === 'create' ? 'Crear usuario nuevo' : 'Editar usuario'"
-        @close="closeModal">
-        <UserFormComponent :isVisible="isVisible" :operation="operation" @close="closeModal" />
-    </BaseModal>
+  <BaseModal
+    size="large"
+    :isVisible="isVisible"
+    :title="operation === 'create' ? 'Crear usuario nuevo' : 'Editar usuario'"
+    @close="closeModal"
+  >
+    <UserFormComponent :isVisible="isVisible" :operation="operation" @close="closeModal" />
+  </BaseModal>
 </template>
 
-<script setup lang='ts'>
-import UserFormComponent from '@/components/users/UserFormComponent.vue';
-import BaseModal from '@/components/modals/BaseModal.vue';
+<script setup lang="ts">
+import UserFormComponent from '@/components/users/UserFormComponent.vue'
+import BaseModal from '@/components/modals/BaseModal.vue'
 
 defineProps<{
-    isVisible: boolean,
-    operation: 'create' | 'edit',
-}>();
+  isVisible: boolean
+  operation: 'create' | 'edit'
+}>()
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close'])
 
 const closeModal = () => {
-    emit('close');
-};
+  emit('close')
+}
 </script>

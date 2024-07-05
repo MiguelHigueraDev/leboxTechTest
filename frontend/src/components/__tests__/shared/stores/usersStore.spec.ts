@@ -50,7 +50,7 @@ describe('useUsersStore', () => {
   })
 
   it('fetches a single user', async () => {
-    const mockUser = { id: 1, name: 'John Doe', email: 'test@gmail.com'}
+    const mockUser = { id: 1, name: 'John Doe', email: 'test@gmail.com' }
     fetchWrapper.get.mockResolvedValue(mockUser)
 
     const usersStore = useUsersStore()

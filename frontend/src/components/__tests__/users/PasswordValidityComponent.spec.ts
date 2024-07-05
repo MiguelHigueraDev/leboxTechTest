@@ -15,9 +15,9 @@ describe('PasswordValidityComponent', () => {
 
   it('validates the password correctly', async () => {
     const wrapper = mount(PasswordValidityComponent, {
-        props: {
-          password: 'contraseña123'
-        }
+      props: {
+        password: 'contraseña123'
+      }
     })
 
     // Two of the requirements are not met (uppercase letter and special character)

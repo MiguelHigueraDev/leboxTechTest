@@ -2,7 +2,6 @@
   View for the login page. It also displays the application features.
 -->
 
-
 <template>
   <main style="height: calc(100% - 44px)">
     <div

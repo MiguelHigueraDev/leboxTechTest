@@ -52,7 +52,7 @@ describe('UsersTableComponent', () => {
               id: 1,
               name: 'Test User',
               password: 'asd',
-              email: 'test@gmail.com',
+              email: 'test@gmail.com'
             }
           ],
           usersPerPage: 10,

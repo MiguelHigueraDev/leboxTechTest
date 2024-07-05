@@ -13,14 +13,16 @@ describe('UserFormComponent', () => {
   beforeEach(() => {
     wrapper = mount(UserFormComponent, {
       global: {
-        plugins: [createTestingPinia({
-          initialState: {
-            currentUser: {
-              currentUser: { id: 0, name: '', email: '', password: '' }
-            }
-          },
-          createSpy: vi.fn
-        })],
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              currentUser: {
+                currentUser: { id: 0, name: '', email: '', password: '' }
+              }
+            },
+            createSpy: vi.fn
+          })
+        ],
         stubs: {
           TextFormInputComponent: true,
           EmailFormInputComponent: true,
@@ -50,8 +52,12 @@ describe('UserFormComponent', () => {
 
   it('enables the form button when fields are valid', async () => {
     await wrapper.findComponent({ name: 'TextFormInputComponent' }).vm.$emit('update:isValid', true)
-    await wrapper.findComponent({ name: 'EmailFormInputComponent' }).vm.$emit('update:isValid', true)
-    await wrapper.findComponent({ name: 'ValidatedPasswordFormInputComponent' }).vm.$emit('update:isValid', true)
+    await wrapper
+      .findComponent({ name: 'EmailFormInputComponent' })
+      .vm.$emit('update:isValid', true)
+    await wrapper
+      .findComponent({ name: 'ValidatedPasswordFormInputComponent' })
+      .vm.$emit('update:isValid', true)
     expect(wrapper.vm.isNameValid).toBe(true)
     expect(wrapper.vm.isEmailValid).toBe(true)
     expect(wrapper.vm.isPasswordValid).toBe(true)
@@ -62,7 +68,10 @@ describe('UserFormComponent', () => {
   it('creates a new user when form is submitted', async () => {
     const createUserMock = vi.spyOn(usersStore, 'createUser').mockResolvedValueOnce(undefined)
     await wrapper.findComponent({ name: 'FormButtonComponent' }).vm.$emit('click')
-    expect(createUserMock).toHaveBeenCalledWith(currentUserStore.currentUser.name, currentUserStore.currentUser.email, currentUserStore.currentUser.password)
+    expect(createUserMock).toHaveBeenCalledWith(
+      currentUserStore.currentUser.name,
+      currentUserStore.currentUser.email,
+      currentUserStore.currentUser.password
+    )
   })
-
 })

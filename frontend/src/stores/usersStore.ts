@@ -35,7 +35,7 @@ export const useUsersStore = defineStore('users', {
         if (successMsg) notifications.addNotification(successMsg, 'success')
         return result
       } catch (error) {
-        this.sendErrorNotification(error, errorMsg);
+        this.sendErrorNotification(error, errorMsg)
         throw error
       }
     },
@@ -44,7 +44,7 @@ export const useUsersStore = defineStore('users', {
     sendErrorNotification(error: any, errorMsg: string) {
       const notifications = useNotificationStore()
       if (error.email) {
-        notifications.addNotification("El email ya está siendo usado por otro usuario.", 'error')
+        notifications.addNotification('El email ya está siendo usado por otro usuario.', 'error')
       } else {
         notifications.addNotification(errorMsg, 'error')
       }
@@ -52,8 +52,13 @@ export const useUsersStore = defineStore('users', {
 
     // Paginated users
     async fetchUsers(page: number = 1) {
-      const request = () => fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=${page}`)
-      const fetchedUsers = await this.handleRequest(request, '', 'Ocurrió un error al cargar los usuarios')
+      const request = () =>
+        fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=${page}`)
+      const fetchedUsers = await this.handleRequest(
+        request,
+        '',
+        'Ocurrió un error al cargar los usuarios'
+      )
       Object.assign(this, {
         users: fetchedUsers.data,
         totalUsers: fetchedUsers.total,
@@ -72,22 +77,36 @@ export const useUsersStore = defineStore('users', {
     },
 
     async createUser(name: string, email: string, password: string) {
-      const request = () => fetchWrapper.post('http://localhost:8000/api/users', { name, email, password })
-      await this.handleRequest(request, 'Usuario creado correctamente', 'Ocurrió un error al crear el usuario')
+      const request = () =>
+        fetchWrapper.post('http://localhost:8000/api/users', { name, email, password })
+      await this.handleRequest(
+        request,
+        'Usuario creado correctamente',
+        'Ocurrió un error al crear el usuario'
+      )
       // Fetch the last page to always show the new user
       await this.fetchLastPage()
       await this.fetchUsers(this.currentPage)
     },
 
     async updateUser(id: number, name: string, email: string, password: string) {
-      const request = () => fetchWrapper.put(`http://localhost:8000/api/users/${id}`, { name, email, password })
-      await this.handleRequest(request, 'Usuario actualizado correctamente', 'Ocurrió un error al actualizar el usuario')
+      const request = () =>
+        fetchWrapper.put(`http://localhost:8000/api/users/${id}`, { name, email, password })
+      await this.handleRequest(
+        request,
+        'Usuario actualizado correctamente',
+        'Ocurrió un error al actualizar el usuario'
+      )
       await this.fetchUsers(this.currentPage)
     },
 
     async deleteUser(id: number) {
       const request = () => fetchWrapper.delete(`http://localhost:8000/api/users/${id}`)
-      await this.handleRequest(request, 'Usuario eliminado correctamente', 'Ocurrió un error al eliminar el usuario')
+      await this.handleRequest(
+        request,
+        'Usuario eliminado correctamente',
+        'Ocurrió un error al eliminar el usuario'
+      )
       // There was one user left on the last page,
       // so we need to go back one page if page > 0
       if (this.from === this.to && this.currentPage > 1) {
@@ -97,7 +116,8 @@ export const useUsersStore = defineStore('users', {
     },
 
     async fetchLastPage() {
-      const request = () => fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=1}`)
+      const request = () =>
+        fetchWrapper.get<PaginatedUserData>(`http://localhost:8000/api/users/?page=1}`)
       const data = await this.handleRequest(request, '', '')
       this.setCurrentPage(data.last_page)
     },

@@ -29,7 +29,6 @@ describe('fetchWrapper', () => {
   it('performs GET request returning data', async () => {
     const responseData = { data: 'test data' }
     mockFetch(200, responseData)
-
     ;(useAuthStore as any).mockReturnValue({
       user: { token: 'fake-token' }
     })
@@ -46,7 +45,6 @@ describe('fetchWrapper', () => {
     const requestData = { key: 'value' }
     const responseData = { data: 'test data' }
     mockFetch(200, responseData)
-
     ;(useAuthStore as any).mockReturnValue({
       user: { token: 'fake-token' }
     })

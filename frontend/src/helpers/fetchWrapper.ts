@@ -30,7 +30,7 @@ function request(method: method) {
    * @param {RequestBody} [body] - The request payload.
    * @returns {Promise<T>} A promise that resolves to the response data of type T.
    */
-  return async<T> (url: string, body?: RequestBody): Promise<T> => {
+  return async <T>(url: string, body?: RequestBody): Promise<T> => {
     const requestOptions: any = {
       method,
       headers: authHeader(url)

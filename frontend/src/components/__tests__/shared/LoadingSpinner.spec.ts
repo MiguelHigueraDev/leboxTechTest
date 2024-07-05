@@ -16,7 +16,7 @@ describe('LoadingSpinner', () => {
     const wrapper = mount(LoadingSpinner, {
       props: { size }
     })
-    
+
     const spinnerElement = wrapper.element as HTMLElement
     expect(spinnerElement.style.width).toBe(`${size}px`)
     expect(spinnerElement.style.height).toBe(`${size}px`)
